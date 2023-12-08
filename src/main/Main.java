@@ -125,6 +125,7 @@ public final class Main {
                 case "removeAnnouncement" -> outputs.add(CommandRunner.removeAnnouncement(command));
                 case "showPodcasts" -> outputs.add(CommandRunner.showPodcasts(command));
                 case "removeAlbum" -> outputs.add(CommandRunner.removeAlbum(command));
+                case "removePodcast" -> outputs.add(CommandRunner.removePodcast(command));
                 case "changePage" -> outputs.add(CommandRunner.changePage(command));
                 case "deleteUser" -> outputs.add(CommandRunner.deleteUser(command));
                 default -> System.out.println("Invalid command " + commandName);

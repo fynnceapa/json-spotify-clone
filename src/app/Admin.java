@@ -419,6 +419,14 @@ public final class Admin {
         switch (type) {
             case "user" -> {
                 User user = getUser(command.getUsername());
+                ArrayList<Song> likedSongs = user.getLikedSongs();
+                ArrayList<Playlist> followedPlaylists = user.getFollowedPlaylists();
+                for (Song song : likedSongs) {
+                    song.dislike();
+                }
+                for (Playlist playlist : followedPlaylists) {
+                    playlist.decreaseFollowers();
+                }
                 users.remove(user);
                 for (User u : users) {
                     ArrayList<Playlist> followed = u.getFollowedPlaylists();

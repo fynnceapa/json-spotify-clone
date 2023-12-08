@@ -790,4 +790,26 @@ public final class CommandRunner {
         return objectNode;
     }
 
+    public static ObjectNode removePodcast(CommandInput command) {
+        Host host = Admin.getHost(command.getUsername());
+        if (host == null) {
+            String message = command.getUsername() + " is not a host.";
+            ObjectNode objectNode = objectMapper.createObjectNode();
+            objectNode.put("command", command.getCommand());
+            objectNode.put("user", command.getUsername());
+            objectNode.put("timestamp", command.getTimestamp());
+            objectNode.put("message", message);
+            return objectNode;
+        }
+
+        String message = host.removePodcast(command.getName());
+
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        objectNode.put("command", command.getCommand());
+        objectNode.put("user", command.getUsername());
+        objectNode.put("timestamp", command.getTimestamp());
+        objectNode.put("message", message);
+
+        return objectNode;
+    }
 }

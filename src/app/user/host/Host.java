@@ -1,8 +1,12 @@
 package app.user.host;
 
+import app.Admin;
 import app.audio.Collections.Podcast;
 import app.audio.LibraryEntry;
 import app.page.HostPage;
+import app.player.Player;
+import app.player.PlayerSource;
+import app.user.User;
 import app.utils.PodcastOut;
 import fileio.input.CommandInput;
 import lombok.Getter;
@@ -58,6 +62,36 @@ public class Host extends LibraryEntry {
 
     public ArrayList<Podcast> getPodcasts() {
         return hostPage.getPodcasts();
+    }
+
+    private boolean checkPodcastRemove(String name) {
+        Podcast podcast = hostPage.getPodcast(name);
+        ArrayList<User> users = (ArrayList<User>) Admin.getUsers();
+        for (User u : users) {
+            Player player = u.getPlayer();
+            if (player.getSource() == null || !player.getType().equals("podcast")) {
+                continue;
+            }
+            PlayerSource source = player.getSource();
+            if (source.getAudioCollection().getName().equals(podcast.getName())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public String removePodcast(String name) {
+        HostPage Page = hostPage;
+        if (!Page.checkPodcastExists(name)) {
+            return username + " doesn't have a podcast with the given name.";
+        }
+        if (!checkPodcastRemove(name)) {
+            return username + " can't delete this podcast.";
+        }
+        Podcast podcast = Page.getPodcast(name);
+        Page.removePodcast(name);
+        Admin.removePodcast(podcast);
+        return username + " deleted the podcast successfully.";
     }
 
 //    public boolean checkPodcastExists(String podcastName) {

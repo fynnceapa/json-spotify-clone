@@ -16,7 +16,7 @@ public class HostPage extends BasicPage {
         this.announcements = new ArrayList<>();
     }
 
-    private boolean checkPodcastExists(String podcastName) {
+    public boolean checkPodcastExists(String podcastName) {
         for (Podcast podcast : podcasts) {
             if (podcast.getName().equals(podcastName)) {
                 return true;
@@ -74,5 +74,23 @@ public class HostPage extends BasicPage {
 
     public ArrayList<Podcast> getPodcasts() {
         return podcasts;
+    }
+
+    public void removePodcast(String name) {
+        for (Podcast podcast : podcasts) {
+            if (podcast.getName().equals(name)) {
+                podcasts.remove(podcast);
+                break;
+            }
+        }
+    }
+
+    public Podcast getPodcast(String name) {
+        for (Podcast podcast : podcasts) {
+            if (podcast.getName().equals(name)) {
+                return podcast;
+            }
+        }
+        return null;
     }
 }
