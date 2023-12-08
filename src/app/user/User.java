@@ -15,6 +15,7 @@ import app.searchBar.SearchBar;
 import app.user.artist.Artist;
 import app.user.host.Host;
 import app.utils.Enums;
+import fileio.input.CommandInput;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -510,7 +511,7 @@ public class User {
         if (!isOnline) {
             return username + " is offline.";
         }
-        if (currentPage.equals("home")) {
+        if (currentPage.equalsIgnoreCase("home")) {
             ArrayList<Song> likedSongs = getLikedSongs();
             likedSongs.sort((o1, o2) -> {
                 return o2.getLikes().compareTo(o1.getLikes());
@@ -543,6 +544,11 @@ public class User {
             }
             return "Liked songs:\n\t" + songNames +"\n\nFollowed playlists:\n\t" + playlistNames;
         }
+        if (currentPage.equals("LikedContent")) {
+            ArrayList<Song> likedSongs = getLikedSongs();
+            ArrayList<Playlist> followedPlaylists = getFollowedPlaylists();
+            return "Liked songs:\n\t" + likedSongs +"\n\nFollowed playlists:\n\t" + followedPlaylists;
+        }
         Artist artist = Admin.getArtist(currentPage);
         if (artist != null) {
             ArtistPage artistPage = artist.getArtistPage();
@@ -557,5 +563,18 @@ public class User {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public String changePage(CommandInput command) {
+        if (!isOnline) {
+            return username + " is offline.";
+        }
+        String page = command.getNextPage();
+        currentPage = page;
+        return username + " accessed " + page + " successfully.";
+    }
+
+    public void setCurrentPage(String c) {
+        currentPage = c;
     }
 }

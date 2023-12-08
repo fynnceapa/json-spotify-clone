@@ -41,4 +41,13 @@ public class Album extends AudioCollection{
     public AudioFile getTrackByIndex(int index) {
         return songs.get(index);
     }
+
+    @Override
+    public boolean matchesOwner(final String user) {
+        return this.getOwner().equals(user);
+    }
+    @Override
+    public boolean matchesName(final String name) {
+        return getName().toLowerCase().startsWith(name.toLowerCase());
+    }
 }

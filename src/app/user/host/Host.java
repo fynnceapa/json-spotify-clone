@@ -56,6 +56,10 @@ public class Host extends LibraryEntry {
         return podcastsOut;
     }
 
+    public ArrayList<Podcast> getPodcasts() {
+        return hostPage.getPodcasts();
+    }
+
 //    public boolean checkPodcastExists(String podcastName) {
 //        return hostPage.checkPodcastExists(podcastName);
 //    }

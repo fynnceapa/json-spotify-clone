@@ -134,6 +134,9 @@ public final class SearchBar {
                 if (filters.getName() != null) {
                     entries = filterByName(entries, filters.getName());
                 }
+                if (filters.getOwner() != null) {
+                    entries = filterByOwner(entries, filters.getOwner());
+                }
                 break;
             case "host":
                 entries = new ArrayList<>(Admin.getHosts());

@@ -381,6 +381,11 @@
     "paused" : false
   }
 }, {
+  "command" : "changePage",
+  "user" : "carol19",
+  "timestamp" : 3251,
+  "message" : "carol19 accessed LikedContent successfully."
+}, {
   "command" : "status",
   "user" : "bob35",
   "timestamp" : 3600,
@@ -486,7 +491,7 @@
   "command" : "printCurrentPage",
   "user" : "carol19",
   "timestamp" : 5000,
-  "message" : "Liked songs:\n\t[Digital Dreams]\n\nFollowed playlists:\n\t[My playlist]"
+  "message" : "Liked songs:\n\t[]\n\nFollowed playlists:\n\t[My playlist - bob35]"
 }, {
   "command" : "status",
   "user" : "bob35",

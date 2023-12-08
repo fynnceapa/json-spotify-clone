@@ -135,4 +135,9 @@ public final class Playlist extends AudioCollection {
             return count == Integer.parseInt(query);
         }
     }
+
+    @Override
+    public String toString() {
+        return getName() + " - " + getOwner();
+    }
 }

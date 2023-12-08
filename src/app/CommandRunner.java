@@ -765,14 +765,29 @@ public final class CommandRunner {
         return objectNode;
     }
 
-//    public static ObjectNode deleteUser(CommandInput command) {
-//        String message = Admin.deleteUser(command);
-//
-//        ObjectNode objectNode = objectMapper.createObjectNode();
-//        objectNode.put("command", command.getCommand());
-//        objectNode.put("timestamp", command.getTimestamp());
-//        objectNode.put("message", message);
-//
-//        return objectNode;
-//    }
+    public static ObjectNode changePage(CommandInput command) {
+        User user = Admin.getUser(command.getUsername());
+        String message = user.changePage(command);
+
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        objectNode.put("command", command.getCommand());
+        objectNode.put("user", command.getUsername());
+        objectNode.put("timestamp", command.getTimestamp());
+        objectNode.put("message", message);
+
+        return objectNode;
+    }
+
+    public static ObjectNode deleteUser(CommandInput command) {
+        String message = Admin.deleteUser(command);
+
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        objectNode.put("command", command.getCommand());
+        objectNode.put("user", command.getUsername());
+        objectNode.put("timestamp", command.getTimestamp());
+        objectNode.put("message", message);
+
+        return objectNode;
+    }
+
 }

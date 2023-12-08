@@ -6,9 +6,11 @@ import app.audio.Collections.Podcast;
 import app.audio.Files.Episode;
 import app.audio.Files.Song;
 import app.player.Player;
+import app.player.PlayerSource;
 import app.user.artist.Artist;
 import app.user.User;
 import app.user.host.Host;
+import app.utils.Enums;
 import fileio.input.*;
 import lombok.Getter;
 
@@ -341,7 +343,118 @@ public final class Admin {
         removeSongs(songs);
     }
 
+    public static void removePodcast(Podcast podcast) {
+        podcasts.remove(podcast);
+    }
+
     private static void removeSongs(ArrayList<Song> songs) {
+        for (User u : users) {
+            ArrayList<Song> likedSongs = u.getLikedSongs();
+            likedSongs.removeAll(songs);
+        }
         Admin.songs.removeAll(songs);
+    }
+
+    private static boolean checkDelete(String name) {
+        for (User u : users) {
+            Player player = u.getPlayer();
+            PlayerSource source = player.getSource();
+            if (source == null) {
+                continue;
+            }
+            if (source.getType() == Enums.PlayerSourceType.ALBUM) {
+                Album album = (Album) source.getAudioCollection();
+                if (album.getOwner().equals(name)) {
+                    return false;
+                }
+            }
+            if (source.getType() == Enums.PlayerSourceType.LIBRARY) {
+                Song song = (Song) source.getAudioFile();
+                if (song.getArtist().equals(name)) {
+                    return false;
+                }
+            }
+            if (source.getType() == Enums.PlayerSourceType.PLAYLIST) {
+                Playlist playlist = (Playlist) source.getAudioCollection();
+                if (playlist.getOwner().equals(name)) {
+                    return false;
+                }
+            }
+            if (source.getType() == Enums.PlayerSourceType.PODCAST) {
+                Podcast podcast = (Podcast) source.getAudioCollection();
+                if (podcast.getOwner().equals(name)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private static String findUserType(String username) {
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                return "user";
+            }
+        }
+        for (Artist artist : artists) {
+            if (artist.getUsername().equals(username)) {
+                return "artist";
+            }
+        }
+        for (Host host : hosts) {
+            if (host.getUsername().equals(username)) {
+                return "host";
+            }
+        }
+        return null;
+    }
+    public static String deleteUser(CommandInput command) {
+        if (!checkUsername(command.getUsername())) {
+            return "The username " + command.getUsername() + " doesn't exist.";
+        }
+        if (!checkDelete(command.getUsername())) {
+            return command.getUsername() + " can't be deleted.";
+        }
+        String type = findUserType(command.getUsername());
+        switch (type) {
+            case "user" -> {
+                User user = getUser(command.getUsername());
+                users.remove(user);
+                for (User u : users) {
+                    ArrayList<Playlist> followed = u.getFollowedPlaylists();
+                    followed.removeIf(playlist -> playlist.getOwner().equals(command.getUsername()));
+                }
+            }
+            case "artist" -> {
+                Artist artist = getArtist(command.getUsername());
+                ArrayList<Album> albums = artist.getAlbums();
+                if (albums != null) {
+                    for (Album album : albums) {
+                        removeAlbum(album);
+                    }
+                }
+                for (User u : users) {
+                    if (u.getCurrentPage().equals(artist.getUsername())) {
+                        u.setCurrentPage("home");
+                    }
+                }
+                artists.remove(artist);
+            }
+            case "host" -> {
+                Host host = getHost(command.getUsername());
+                ArrayList<Podcast> podcasts = host.getPodcasts();
+                if (podcasts != null) {
+                    for (Podcast podcast : podcasts) {
+                        removePodcast(podcast);
+                    }
+                }
+                hosts.remove(host);
+            }
+            default -> {
+                return "Invalid type for deleting a user.";
+            }
+        }
+
+        return command.getUsername() + " was successfully deleted.";
     }
 }
