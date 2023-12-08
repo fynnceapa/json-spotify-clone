@@ -118,6 +118,7 @@ public final class Main {
                 case "showAlbums" -> outputs.add(CommandRunner.showAlbums(command));
                 case "printCurrentPage" -> outputs.add(CommandRunner.printCurrentPage(command));
                 case "addEvent" -> outputs.add(CommandRunner.addEvent(command));
+                case "removeEvent" -> outputs.add(CommandRunner.removeEvent(command));
                 case "addMerch" -> outputs.add(CommandRunner.addMerch(command));
                 case "getAllUsers" -> outputs.add(CommandRunner.getAllUsers(command));
                 case "addPodcast" -> outputs.add(CommandRunner.addPodcast(command));

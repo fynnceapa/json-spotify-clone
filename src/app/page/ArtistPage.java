@@ -55,4 +55,13 @@ public class ArtistPage extends BasicPage{
             }
         }
     }
+
+    public void removeEvent(String name) {
+        for (Event e: this.events) {
+            if (e.getName().equals(name)) {
+                this.events.remove(e);
+                break;
+            }
+        }
+    }
 }

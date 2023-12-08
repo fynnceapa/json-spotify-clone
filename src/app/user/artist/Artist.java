@@ -2,6 +2,7 @@ package app.user.artist;
 
 import app.Admin;
 import app.audio.Collections.Album;
+import app.audio.Collections.Playlist;
 import app.audio.Files.Song;
 import app.audio.LibraryEntry;
 import app.page.ArtistPage;
@@ -84,7 +85,7 @@ public class Artist extends LibraryEntry {
         }
         Event event = new Event(command);
         if (!event.checkDate(command.getDate())) {
-            return "Event for " + username + "does not have a valid date.";
+            return "Event for " + username + " does not have a valid date.";
         }
         artistPage.addEvent(event);
         return username + " has added new event successfully.";
@@ -134,6 +135,16 @@ public class Artist extends LibraryEntry {
                 }
             }
         }
+        ArrayList<Playlist> playlists = (ArrayList<Playlist>) Admin.getPlaylists();
+        ArrayList<Song> albumSongs = album.getSongs();
+        for (Playlist playlist : playlists) {
+            ArrayList<Song> playlistSongs = playlist.getSongs();
+            for (Song song : albumSongs) {
+                if (playlistSongs.contains(song)) {
+                    return false;
+                }
+            }
+        }
         return true;
     }
 
@@ -148,5 +159,13 @@ public class Artist extends LibraryEntry {
         artistPage.removeAlbum(name);
         Admin.removeAlbum(album);
         return username + " has removed the album successfully.";
+    }
+
+    public String removeEvent(String name) {
+        if (!checkEventExists(name)) {
+            return username + " doesn't have an event with the given name.";
+        }
+        artistPage.removeEvent(name);
+        return username + " deleted the event successfully.";
     }
 }

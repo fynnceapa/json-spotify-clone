@@ -745,11 +745,21 @@ public final class CommandRunner {
     }
 
     public static ObjectNode removeAlbum(CommandInput command) {
+        if (!Admin.checkUsername(command.getUsername())) {
+            String message = "The username " + command.getUsername() + " doesn't exist.";
+            ObjectNode objectNode = objectMapper.createObjectNode();
+            objectNode.put("command", command.getCommand());
+            objectNode.put("user", command.getUsername());
+            objectNode.put("timestamp", command.getTimestamp());
+            objectNode.put("message", message);
+            return objectNode;
+        }
         Artist artist = Admin.getArtist(command.getUsername());
         if (artist == null) {
             String message = command.getUsername() + " is not an artist.";
             ObjectNode objectNode = objectMapper.createObjectNode();
             objectNode.put("command", command.getCommand());
+            objectNode.put("user", command.getUsername());
             objectNode.put("timestamp", command.getTimestamp());
             objectNode.put("message", message);
             return objectNode;
@@ -791,6 +801,15 @@ public final class CommandRunner {
     }
 
     public static ObjectNode removePodcast(CommandInput command) {
+        if (!Admin.checkUsername(command.getUsername())) {
+            String message = "The username " + command.getUsername() + " doesn't exist.";
+            ObjectNode objectNode = objectMapper.createObjectNode();
+            objectNode.put("command", command.getCommand());
+            objectNode.put("user", command.getUsername());
+            objectNode.put("timestamp", command.getTimestamp());
+            objectNode.put("message", message);
+            return objectNode;
+        }
         Host host = Admin.getHost(command.getUsername());
         if (host == null) {
             String message = command.getUsername() + " is not a host.";
@@ -811,5 +830,34 @@ public final class CommandRunner {
         objectNode.put("message", message);
 
         return objectNode;
+    }
+
+    public static ObjectNode removeEvent(CommandInput command) {
+        if (!Admin.checkUsername(command.getUsername())) {
+            String message = "The username " + command.getUsername() + " doesn't exist.";
+            ObjectNode objectNode = objectMapper.createObjectNode();
+            objectNode.put("command", command.getCommand());
+            objectNode.put("timestamp", command.getTimestamp());
+            objectNode.put("message", message);
+            return objectNode;
+        }
+        Artist artist = Admin.getArtist(command.getUsername());
+        if (artist == null) {
+            String message = command.getUsername() + " is not an artist.";
+            ObjectNode objectNode = objectMapper.createObjectNode();
+            objectNode.put("command", command.getCommand());
+            objectNode.put("timestamp", command.getTimestamp());
+            objectNode.put("message", message);
+            return objectNode;
+        }
+        String message = artist.removeEvent(command.getName());
+
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        objectNode.put("command", command.getCommand());
+        objectNode.put("user", command.getUsername());
+        objectNode.put("timestamp",command.getTimestamp());
+        objectNode.put("message", message);
+        return objectNode;
+
     }
 }
