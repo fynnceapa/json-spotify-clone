@@ -363,5 +363,5 @@
   "command" : "deleteUser",
   "user" : "soundseeker",
   "timestamp" : 100000,
-  "message" : "soundseeker was successfully deleted."
+  "message" : "soundseeker can't be deleted."
 } ]

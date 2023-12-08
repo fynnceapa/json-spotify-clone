@@ -50,4 +50,12 @@ public class Album extends AudioCollection{
     public boolean matchesName(final String name) {
         return getName().toLowerCase().startsWith(name.toLowerCase());
     }
+
+    public Integer getLikes() {
+        Integer totalLikes = 0;
+        for (Song song : songs) {
+            totalLikes += song.getLikes();
+        }
+        return totalLikes;
+    }
 }

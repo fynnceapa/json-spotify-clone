@@ -443,7 +443,7 @@ public final class Admin {
                 }
                 for (User u : users) {
                     if (u.getCurrentPage().equals(artist.getUsername())) {
-                        u.setCurrentPage("home");
+                        return command.getUsername() + " can't be deleted.";
                     }
                 }
                 artists.remove(artist);
@@ -456,6 +456,11 @@ public final class Admin {
                         removePodcast(podcast);
                     }
                 }
+                for (User u : users) {
+                    if (u.getCurrentPage().equals(host.getUsername())) {
+                        return command.getUsername() + " can't be deleted.";
+                    }
+                }
                 hosts.remove(host);
             }
             default -> {
@@ -464,5 +469,20 @@ public final class Admin {
         }
 
         return command.getUsername() + " was successfully deleted.";
+    }
+
+    public static List<String> getTop5Albums() {
+        List<Album> sortedAlbums = new ArrayList<>(albums);
+        sortedAlbums.sort(Comparator.comparingInt(Album::getLikes).reversed());
+        List<String> topAlbums = new ArrayList<>();
+        int count = 0;
+        for (Album album : sortedAlbums) {
+            if (count >= LIMIT) {
+                break;
+            }
+            topAlbums.add(album.getName());
+            count++;
+        }
+        return topAlbums;
     }
 }

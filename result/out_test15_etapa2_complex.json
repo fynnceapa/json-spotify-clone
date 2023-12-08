@@ -26047,4 +26047,8 @@
   "command" : "getTop5Songs",
   "timestamp" : 14849,
   "result" : [ "Stairway to Heaven", "Money Trees", "Under Pressure", "Dream On", "Whatever You Need" ]
+}, {
+  "command" : "getTop5Albums",
+  "timestamp" : 14849,
+  "result" : [ "Heroic Harmonies", "Chill Funeral ", "Heroic Hood", "Electric Harmonies", "Bad Funeral " ]
 } ]

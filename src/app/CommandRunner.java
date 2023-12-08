@@ -860,4 +860,15 @@ public final class CommandRunner {
         return objectNode;
 
     }
+
+    public static ObjectNode getTop5Albums(CommandInput command) {
+        List<String> albums = Admin.getTop5Albums();
+
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        objectNode.put("command", command.getCommand());
+        objectNode.put("timestamp", command.getTimestamp());
+        objectNode.put("result", objectMapper.valueToTree(albums));
+
+        return objectNode;
+    }
 }

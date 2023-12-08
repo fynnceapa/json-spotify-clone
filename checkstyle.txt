@@ -32,6 +32,7 @@ Starting audit...
 [ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\Admin.java:433: Line is longer than 100 characters (found 101). [LineLength]
 [ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\Admin.java:438:34: 'albums' hides a field. [HiddenField]
 [ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\Admin.java:453:36: 'podcasts' hides a field. [HiddenField]
+[ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\Admin.java:474:5: Missing a Javadoc comment. [MissingJavadocMethod]
 [ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\audio\Collections\Album.java:5:8: Unused import - app.audio.LibraryEntry. [UnusedImports]
 [ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\audio\Collections\Album.java:6:8: Unused import - app.user.artist.Artist. [UnusedImports]
 [ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\audio\Collections\Album.java:13:43: '{' is not preceded with whitespace. [WhitespaceAround]
@@ -42,6 +43,8 @@ Starting audit...
 [ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\audio\Collections\Album.java:41:38: Parameter index should be final. [FinalParameters]
 [ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\audio\Collections\Album.java:45:5: Class 'Album' looks like designed for extension (can be subclassed), but the method 'matchesOwner' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Album' final or making the method 'matchesOwner' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
 [ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\audio\Collections\Album.java:49:5: Class 'Album' looks like designed for extension (can be subclassed), but the method 'matchesName' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Album' final or making the method 'matchesName' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
+[ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\audio\Collections\Album.java:54:5: Class 'Album' looks like designed for extension (can be subclassed), but the method 'getLikes' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Album' final or making the method 'getLikes' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
+[ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\audio\Collections\Album.java:54:5: Missing a Javadoc comment. [MissingJavadocMethod]
 [ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\audio\Collections\Podcast.java:43:27: 'episodes' hides a field. [HiddenField]
 [ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\CommandRunner.java:5:8: Unused import - app.audio.Collections.Podcast. [UnusedImports]
 [ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\CommandRunner.java:6:8: Unused import - app.audio.Files.Song. [UnusedImports]
@@ -84,6 +87,8 @@ Starting audit...
 [ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\CommandRunner.java:835:5: Missing a Javadoc comment. [MissingJavadocMethod]
 [ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\CommandRunner.java:835:42: Parameter command should be final. [FinalParameters]
 [ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\CommandRunner.java:858:35: ',' is not followed by whitespace. [WhitespaceAfter]
+[ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\CommandRunner.java:864:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\CommandRunner.java:864:44: Parameter command should be final. [FinalParameters]
 [ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\page\ArtistPage.java:10:42: '{' is not preceded with whitespace. [WhitespaceAround]
 [ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\page\ArtistPage.java:21:5: Class 'ArtistPage' looks like designed for extension (can be subclassed), but the method 'addAlbum' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'ArtistPage' final or making the method 'addAlbum' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
 [ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\app\page\ArtistPage.java:21:5: Missing a Javadoc comment. [MissingJavadocMethod]
@@ -245,4 +250,4 @@ Starting audit...
 [ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\fileio\input\CommandInput.java:103:24: Parameter age should be final. [FinalParameters]
 [ERROR] E:\!FACULTATE\poo\tema\etapa2\.\src\fileio\input\CommandInput.java:111:25: Parameter city should be final. [FinalParameters]
 Audit done.
-Checkstyle ends with 245 errors.
+Checkstyle ends with 250 errors.
