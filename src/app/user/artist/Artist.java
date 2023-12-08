@@ -1,10 +1,16 @@
 package app.user.artist;
 
+import app.Admin;
 import app.audio.Collections.Album;
+import app.audio.Files.Song;
 import app.audio.LibraryEntry;
 import app.page.ArtistPage;
+import app.player.Player;
+import app.player.PlayerSource;
+import app.user.User;
 import fileio.input.CommandInput;
 import lombok.Getter;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 
@@ -107,5 +113,40 @@ public class Artist extends LibraryEntry {
             }
         }
         return false;
+    }
+
+    private boolean checkAlbumRemove(String name) {
+        Album album = getAlbum(name);
+        ArrayList<User> users = (ArrayList<User>) Admin.getUsers();
+        for (User user : users) {
+            Player player = user.getPlayer();
+            if (player.getSource() == null || player.getType().equals("podcast")) {
+                continue;
+            }
+            PlayerSource source = player.getSource();
+            if (source.getAudioCollection().getName().equals(album.getName())) {
+                return false;
+            }
+            ArrayList<Song> albumSongs = album.getSongs();
+            for (Song song : albumSongs) {
+                if (source.getAudioFile().getName().equals(song.getName())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public String removeAlbum(String name) {
+        if (!checkAlbumExists(name)) {
+            return username + " doesn't have an album with the given name.";
+        }
+        if (!checkAlbumRemove(name)) {
+            return username + " can't delete this album.";
+        }
+        Album album = getAlbum(name);
+        artistPage.removeAlbum(name);
+        Admin.removeAlbum(album);
+        return username + " has removed the album successfully.";
     }
 }

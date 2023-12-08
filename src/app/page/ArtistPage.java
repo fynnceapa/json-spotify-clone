@@ -46,4 +46,13 @@ public class ArtistPage extends BasicPage{
     public void addMerch(Merch merch) {
         this.merch.add(merch);
     }
+
+    public void removeAlbum(String name) {
+        for (Album a: this.albums) {
+            if (a.getName().equals(name)) {
+                this.albums.remove(a);
+                break;
+            }
+        }
+    }
 }

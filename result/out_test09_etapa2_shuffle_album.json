@@ -104,6 +104,10 @@
   "message" : "Search returned 1 results",
   "results" : [ "Elevate" ]
 }, {
+  "command" : "removeAlbum",
+  "timestamp" : 375,
+  "message" : "Ed Sheeran is not an artist."
+}, {
   "command" : "select",
   "user" : "bob35",
   "timestamp" : 390,
@@ -128,6 +132,11 @@
   "user" : "david27",
   "timestamp" : 430,
   "message" : "Albums:\n\t[Harmonic Horizons]\n\nMerch:\n\t[]\n\nEvents:\n\t[Event1 - 01-01-2022:\n\tPrimul Event adaugat!]"
+}, {
+  "command" : "removeAlbum",
+  "user" : "melodymaster",
+  "timestamp" : 430,
+  "message" : "melodymaster doesn't have an album with the given name."
 }, {
   "command" : "search",
   "user" : "bob35",
@@ -212,6 +221,11 @@
   "user" : "carol19",
   "timestamp" : 1115,
   "message" : "Like registered successfully."
+}, {
+  "command" : "removeAlbum",
+  "user" : "melodymaster",
+  "timestamp" : 1200,
+  "message" : "melodymaster can't delete this album."
 }, {
   "command" : "search",
   "user" : "carol19",
@@ -351,6 +365,11 @@
     "paused" : false
   }
 }, {
+  "command" : "removeAlbum",
+  "user" : "melodymaster",
+  "timestamp" : 3000,
+  "message" : "melodymaster has removed the album successfully."
+}, {
   "command" : "status",
   "user" : "bob35",
   "timestamp" : 3250,
@@ -392,7 +411,7 @@
   "command" : "printCurrentPage",
   "user" : "david27",
   "timestamp" : 3900,
-  "message" : "Albums:\n\t[Harmonic Horizons]\n\nMerch:\n\t[Merch1 - 100:\n\tPrimul Merch adaugat!]\n\nEvents:\n\t[Event1 - 01-01-2022:\n\tPrimul Event adaugat!, Event2 - 05-02-2021:\n\tAl doilea Event adaugat!]"
+  "message" : "Albums:\n\t[]\n\nMerch:\n\t[Merch1 - 100:\n\tPrimul Merch adaugat!]\n\nEvents:\n\t[Event1 - 01-01-2022:\n\tPrimul Event adaugat!, Event2 - 05-02-2021:\n\tAl doilea Event adaugat!]"
 }, {
   "command" : "status",
   "user" : "bob35",
@@ -440,7 +459,7 @@
   "command" : "printCurrentPage",
   "user" : "david27",
   "timestamp" : 4400,
-  "message" : "Albums:\n\t[Harmonic Horizons]\n\nMerch:\n\t[Merch1 - 100:\n\tPrimul Merch adaugat!]\n\nEvents:\n\t[Event1 - 01-01-2022:\n\tPrimul Event adaugat!, Event2 - 05-02-2021:\n\tAl doilea Event adaugat!]"
+  "message" : "Albums:\n\t[]\n\nMerch:\n\t[Merch1 - 100:\n\tPrimul Merch adaugat!]\n\nEvents:\n\t[Event1 - 01-01-2022:\n\tPrimul Event adaugat!, Event2 - 05-02-2021:\n\tAl doilea Event adaugat!]"
 }, {
   "command" : "status",
   "user" : "bob35",

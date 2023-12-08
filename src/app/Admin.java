@@ -10,6 +10,7 @@ import app.user.artist.Artist;
 import app.user.User;
 import app.user.host.Host;
 import fileio.input.*;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -19,6 +20,7 @@ import java.util.List;
  * The type Admin.
  */
 public final class Admin {
+    @Getter
     private static List<User> users = new ArrayList<>();
     private static List<Song> songs = new ArrayList<>();
     private static List<Podcast> podcasts = new ArrayList<>();
@@ -331,5 +333,15 @@ public final class Admin {
         albums.add(album);
         ArrayList<Song> songs = album.getSongs();
         addSongs(songs);
+    }
+
+    public static void removeAlbum(Album album) {
+        albums.remove(album);
+        ArrayList<Song> songs = album.getSongs();
+        removeSongs(songs);
+    }
+
+    private static void removeSongs(ArrayList<Song> songs) {
+        Admin.songs.removeAll(songs);
     }
 }

@@ -744,6 +744,27 @@ public final class CommandRunner {
         return objectNode;
     }
 
+    public static ObjectNode removeAlbum(CommandInput command) {
+        Artist artist = Admin.getArtist(command.getUsername());
+        if (artist == null) {
+            String message = command.getUsername() + " is not an artist.";
+            ObjectNode objectNode = objectMapper.createObjectNode();
+            objectNode.put("command", command.getCommand());
+            objectNode.put("timestamp", command.getTimestamp());
+            objectNode.put("message", message);
+            return objectNode;
+        }
+        String message = artist.removeAlbum(command.getName());
+
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        objectNode.put("command", command.getCommand());
+        objectNode.put("user", command.getUsername());
+        objectNode.put("timestamp", command.getTimestamp());
+        objectNode.put("message", message);
+
+        return objectNode;
+    }
+
 //    public static ObjectNode deleteUser(CommandInput command) {
 //        String message = Admin.deleteUser(command);
 //
