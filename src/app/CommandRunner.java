@@ -445,10 +445,19 @@ public final class CommandRunner {
     }
 
     public static ObjectNode switchConnectionStatus(CommandInput command) {
+        if (!Admin.checkUsername(command.getUsername())) {
+            String message = "The username " + command.getUsername() + " doesn't exist.";
+            ObjectNode objectNode = objectMapper.createObjectNode();
+            objectNode.put("command", command.getCommand());
+            objectNode.put("user", command.getUsername());
+            objectNode.put("timestamp", command.getTimestamp());
+            objectNode.put("message", message);
+            return objectNode;
+        }
         User user = Admin.getUser(command.getUsername());
         String message;
         if (user == null) {
-            message = "The username " + command.getUsername() + " doesn't exist.";
+            message = command.getUsername() + " is not a normal user.";
         } else {
             user.switchOnline();
             message = command.getUsername() + " has changed status successfully.";
@@ -868,6 +877,17 @@ public final class CommandRunner {
         objectNode.put("command", command.getCommand());
         objectNode.put("timestamp", command.getTimestamp());
         objectNode.put("result", objectMapper.valueToTree(albums));
+
+        return objectNode;
+    }
+
+    public static ObjectNode getTop5Artists(CommandInput command) {
+        List<String> artists = Admin.getTop5Artists();
+
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        objectNode.put("command", command.getCommand());
+        objectNode.put("timestamp", command.getTimestamp());
+        objectNode.put("result", objectMapper.valueToTree(artists));
 
         return objectNode;
     }

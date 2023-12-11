@@ -168,4 +168,15 @@ public class Artist extends LibraryEntry {
         artistPage.removeEvent(name);
         return username + " deleted the event successfully.";
     }
+
+    public int getLikes() {
+        ArrayList<Album> albums = (ArrayList<Album>) Admin.getAlbums();
+        int likes = 0;
+        for (Album album : albums) {
+            if (album.getOwner().equals(username)) {
+                likes += album.getLikes();
+            }
+        }
+        return likes;
+    }
 }

@@ -436,14 +436,23 @@ public final class Admin {
             case "artist" -> {
                 Artist artist = getArtist(command.getUsername());
                 ArrayList<Album> albums = artist.getAlbums();
-                if (albums != null) {
-                    for (Album album : albums) {
-                        removeAlbum(album);
-                    }
-                }
                 for (User u : users) {
                     if (u.getCurrentPage().equals(artist.getUsername())) {
                         return command.getUsername() + " can't be deleted.";
+                    }
+                    ArrayList<Playlist> playlists = u.getPlaylists();
+                    for (Playlist p : playlists) {
+                        ArrayList<Song> songs = p.getSongs();
+                        for (Song song : songs) {
+                            if (song.getArtist().equals(artist.getUsername())) {
+                                return command.getUsername() + " can't be deleted.";
+                            }
+                        }
+                    }
+                }
+                if (albums != null) {
+                    for (Album album : albums) {
+                        removeAlbum(album);
                     }
                 }
                 artists.remove(artist);
@@ -451,14 +460,14 @@ public final class Admin {
             case "host" -> {
                 Host host = getHost(command.getUsername());
                 ArrayList<Podcast> podcasts = host.getPodcasts();
-                if (podcasts != null) {
-                    for (Podcast podcast : podcasts) {
-                        removePodcast(podcast);
-                    }
-                }
                 for (User u : users) {
                     if (u.getCurrentPage().equals(host.getUsername())) {
                         return command.getUsername() + " can't be deleted.";
+                    }
+                }
+                if (podcasts != null) {
+                    for (Podcast podcast : podcasts) {
+                        removePodcast(podcast);
                     }
                 }
                 hosts.remove(host);
@@ -473,7 +482,9 @@ public final class Admin {
 
     public static List<String> getTop5Albums() {
         List<Album> sortedAlbums = new ArrayList<>(albums);
-        sortedAlbums.sort(Comparator.comparingInt(Album::getLikes).reversed());
+        sortedAlbums.sort(Comparator.comparingInt(Album::getLikes)
+                .reversed()
+                .thenComparing(Album::getName, Comparator.naturalOrder()));
         List<String> topAlbums = new ArrayList<>();
         int count = 0;
         for (Album album : sortedAlbums) {
@@ -484,5 +495,22 @@ public final class Admin {
             count++;
         }
         return topAlbums;
+    }
+
+    public static List<String> getTop5Artists() {
+        List<Artist> sortedArtists = new ArrayList<>(artists);
+        sortedArtists.sort(Comparator.comparingInt(Artist::getLikes)
+                .reversed()
+                .thenComparing(Artist::getUsername, Comparator.naturalOrder()));
+        List<String> topArtists = new ArrayList<>();
+        int count = 0;
+        for (Artist artist : sortedArtists) {
+            if (count >= LIMIT) {
+                break;
+            }
+            topArtists.add(artist.getUsername());
+            count++;
+        }
+        return topArtists;
     }
 }

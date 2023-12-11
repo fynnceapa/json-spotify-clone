@@ -270,7 +270,8 @@ public class User {
             return "Please load a source before liking or unliking.";
         }
 
-        if (!player.getType().equals("song") && !player.getType().equals("playlist")) {
+        if (!player.getType().equals("song") && !player.getType().equals("playlist") &&
+                !player.getType().equals("album")) {
             return "Loaded source is not a song.";
         }
 
@@ -513,18 +514,18 @@ public class User {
         }
         if (currentPage.equalsIgnoreCase("home")) {
             ArrayList<Song> likedSongs = getLikedSongs();
-            likedSongs.sort((o1, o2) -> {
-                return o2.getLikes().compareTo(o1.getLikes());
-            });
+            ArrayList<Song> sortedSongs = new ArrayList<>(likedSongs);
+            sortedSongs.sort((o1, o2) -> o2.getLikes() - o1.getLikes());
             ArrayList<String> songNames = new ArrayList<>();
-            for (Song song : likedSongs) {
+            for (Song song : sortedSongs) {
                 songNames.add(song.getName());
                 if (songNames.size() == 5) {
                     break;
                 }
             }
             ArrayList<Playlist> followedPlaylists = getFollowedPlaylists();
-            followedPlaylists.sort((o1, o2) -> {
+            ArrayList<Playlist> sortedPlaylists = new ArrayList<>(followedPlaylists);
+            sortedPlaylists.sort((o1, o2) -> {
                 int o1Likes = 0;
                 int o2Likes = 0;
                 for (Song song : o1.getSongs()) {
@@ -536,7 +537,7 @@ public class User {
                 return o2Likes - o1Likes;
             });
             ArrayList<String> playlistNames = new ArrayList<>();
-            for (Playlist playlist : followedPlaylists) {
+            for (Playlist playlist : sortedPlaylists) {
                 playlistNames.add(playlist.getName());
                 if (playlistNames.size() == 5) {
                     break;
@@ -547,7 +548,8 @@ public class User {
         if (currentPage.equals("LikedContent")) {
             ArrayList<Song> likedSongs = getLikedSongs();
             ArrayList<Playlist> followedPlaylists = getFollowedPlaylists();
-            return "Liked songs:\n\t" + likedSongs +"\n\nFollowed playlists:\n\t" + followedPlaylists;
+            return "Liked songs:\n\t" + likedSongs
+                    + "\n\nFollowed playlists:\n\t" + followedPlaylists;
         }
         Artist artist = Admin.getArtist(currentPage);
         if (artist != null) {
