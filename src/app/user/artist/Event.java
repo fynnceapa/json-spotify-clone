@@ -32,7 +32,7 @@ public class Event {
         if (month > 12) {
             return false;
         }
-        if (year < 1900 || year > 20213) {
+        if (year < 1900 || year > 2023) {
             return false;
         }
         return true;

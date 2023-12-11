@@ -1,96 +1,35 @@
 package app.page;
 
-import app.Admin;
 import app.audio.Collections.Podcast;
 import app.user.host.Announcement;
-import fileio.input.CommandInput;
+import app.user.host.Host;
 
 import java.util.ArrayList;
 
-public class HostPage extends BasicPage {
+public class HostPage extends BasicPage implements Visitable{
     ArrayList<Podcast> podcasts;
     ArrayList<Announcement> announcements;
-
-    public HostPage() {
-        this.podcasts = new ArrayList<>();
-        this.announcements = new ArrayList<>();
-    }
-
-    public boolean checkPodcastExists(String podcastName) {
-        for (Podcast podcast : podcasts) {
-            if (podcast.getName().equals(podcastName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public String addPodcast(CommandInput command) {
-        podcasts.add(new Podcast(command));
-        return command.getUsername() + " has added new podcast successfully.";
-    }
-
-    private boolean checkAnnouncementExists(String announcementName) {
-        for (Announcement announcement : announcements) {
-            if (announcement.getName().equals(announcementName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    public String addAnnouncement(CommandInput command) {
-        if (checkAnnouncementExists(command.getName())) {
-            return command.getUsername() + " has already added an announcement with this name.";
-        }
-        announcements.add(new Announcement(command));
-        return command.getUsername() + " has successfully added new announcement.";
+    public HostPage(Host host) {
+        super(host.getName());
+        this.podcasts = host.getPodcasts();
+        this.announcements = host.getAnnouncements();
     }
 
     @Override
     public String toString() {
-        ArrayList<String> podcasts = new ArrayList<>();
-        for (Podcast podcast : this.podcasts) {
-            podcasts.add(podcast.toString());
+        ArrayList<String> podcastsNames = new ArrayList<>();
+        for (Podcast p : this.podcasts) {
+            podcastsNames.add(p.toString());
         }
-        ArrayList<String> announcements = new ArrayList<>();
-        for (Announcement announcement : this.announcements) {
-            announcements.add(announcement.toString());
+        ArrayList<String> announcementsNames = new ArrayList<>();
+        for (Announcement a : this.announcements) {
+            announcementsNames.add(a.toString());
         }
-        return "Podcasts:\n\t" + podcasts + "\n\nAnnouncements:\n\t" + announcements;
+        return "Podcasts:\n\t" + podcastsNames + "\n\nAnnouncements:\n\t" + announcementsNames;
     }
 
-    public String removeAnnouncement(CommandInput command) {
-        if (!checkAnnouncementExists(command.getName())) {
-            return command.getUsername() + " has no announcement with the given name.";
-        }
-        for (Announcement announcement : announcements) {
-            if (announcement.getName().equals(command.getName())) {
-                announcements.remove(announcement);
-                return command.getUsername() + " has successfully deleted the announcement.";
-            }
-        }
-        return null;
-    }
-
-    public ArrayList<Podcast> getPodcasts() {
-        return podcasts;
-    }
-
-    public void removePodcast(String name) {
-        for (Podcast podcast : podcasts) {
-            if (podcast.getName().equals(name)) {
-                podcasts.remove(podcast);
-                break;
-            }
-        }
-    }
-
-    public Podcast getPodcast(String name) {
-        for (Podcast podcast : podcasts) {
-            if (podcast.getName().equals(name)) {
-                return podcast;
-            }
-        }
-        return null;
+    @Override
+    public String accept(Visitor visitor) {
+        return visitor.visit(this);
     }
 }

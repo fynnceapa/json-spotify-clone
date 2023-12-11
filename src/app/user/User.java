@@ -7,7 +7,7 @@ import app.audio.Collections.PlaylistOutput;
 import app.audio.Files.AudioFile;
 import app.audio.Files.Song;
 import app.audio.LibraryEntry;
-import app.page.ArtistPage;
+import app.page.*;
 import app.player.Player;
 import app.player.PlayerStats;
 import app.searchBar.Filters;
@@ -20,6 +20,12 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import app.page.BasicPage;
+import app.page.HomePage;
+import app.page.LikedContent;
+import app.page.ArtistPage;
+import app.page.HostPage;
 
 /**
  * The type User.
@@ -40,10 +46,12 @@ public class User {
     @Getter
     private boolean isOnline;
     @Getter
-    private String currentPage;
+    private BasicPage currentPage;
     private final Player player;
     private final SearchBar searchBar;
     private boolean lastSearched;
+
+    private final PageVisitor pageVisitor = new PageVisitor();
 
 
     /**
@@ -64,7 +72,7 @@ public class User {
         searchBar = new SearchBar(username);
         lastSearched = false;
         isOnline = true;
-        currentPage = "home";
+        currentPage = new HomePage(this);
     }
 
     /**
@@ -106,9 +114,12 @@ public class User {
         if (selected == null) {
             return "The selected ID is too high.";
         }
-        if (searchBar.getLastSearchType().equals("artist") ||
-                searchBar.getLastSearchType().equals("host")) {
-            currentPage = selected.getName();
+        if (searchBar.getLastSearchType().equals("artist")) {
+            currentPage = new ArtistPage((Artist) selected);
+            return "Successfully selected " + selected.getName() + "'s page.";
+        }
+        if (searchBar.getLastSearchType().equals("host")) {
+            currentPage = new HostPage((Host) selected);
             return "Successfully selected " + selected.getName() + "'s page.";
         }
 
@@ -512,55 +523,7 @@ public class User {
         if (!isOnline) {
             return username + " is offline.";
         }
-        if (currentPage.equalsIgnoreCase("home")) {
-            ArrayList<Song> likedSongs = getLikedSongs();
-            ArrayList<Song> sortedSongs = new ArrayList<>(likedSongs);
-            sortedSongs.sort((o1, o2) -> o2.getLikes() - o1.getLikes());
-            ArrayList<String> songNames = new ArrayList<>();
-            for (Song song : sortedSongs) {
-                songNames.add(song.getName());
-                if (songNames.size() == 5) {
-                    break;
-                }
-            }
-            ArrayList<Playlist> followedPlaylists = getFollowedPlaylists();
-            ArrayList<Playlist> sortedPlaylists = new ArrayList<>(followedPlaylists);
-            sortedPlaylists.sort((o1, o2) -> {
-                int o1Likes = 0;
-                int o2Likes = 0;
-                for (Song song : o1.getSongs()) {
-                    o1Likes += song.getLikes();
-                }
-                for (Song song : o2.getSongs()) {
-                    o2Likes += song.getLikes();
-                }
-                return o2Likes - o1Likes;
-            });
-            ArrayList<String> playlistNames = new ArrayList<>();
-            for (Playlist playlist : sortedPlaylists) {
-                playlistNames.add(playlist.getName());
-                if (playlistNames.size() == 5) {
-                    break;
-                }
-            }
-            return "Liked songs:\n\t" + songNames +"\n\nFollowed playlists:\n\t" + playlistNames;
-        }
-        if (currentPage.equals("LikedContent")) {
-            ArrayList<Song> likedSongs = getLikedSongs();
-            ArrayList<Playlist> followedPlaylists = getFollowedPlaylists();
-            return "Liked songs:\n\t" + likedSongs
-                    + "\n\nFollowed playlists:\n\t" + followedPlaylists;
-        }
-        Artist artist = Admin.getArtist(currentPage);
-        if (artist != null) {
-            ArtistPage artistPage = artist.getArtistPage();
-            return artistPage.toString();
-        }
-        Host host = Admin.getHost(currentPage);
-        if (host != null) {
-            return host.getHostPage().toString();
-        }
-        return "Invalid page.";
+        return currentPage.accept(pageVisitor);
     }
 
     public Player getPlayer() {
@@ -572,11 +535,18 @@ public class User {
             return username + " is offline.";
         }
         String page = command.getNextPage();
-        currentPage = page;
-        return username + " accessed " + page + " successfully.";
+        if (page.equalsIgnoreCase("Home")) {
+            currentPage = new HomePage(this);
+            return username + " accessed " + page + " successfully.";
+        }
+        if (page.equalsIgnoreCase("LikedContent")) {
+            currentPage = new LikedContent(this);
+            return username + " accessed " + page + " successfully.";
+        }
+        return username + " is trying to access a non-existent page.";
     }
 
-    public void setCurrentPage(String c) {
+    public void setCurrentPage(BasicPage c) {
         currentPage = c;
     }
 }

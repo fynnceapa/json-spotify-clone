@@ -437,7 +437,7 @@ public final class Admin {
                 Artist artist = getArtist(command.getUsername());
                 ArrayList<Album> albums = artist.getAlbums();
                 for (User u : users) {
-                    if (u.getCurrentPage().equals(artist.getUsername())) {
+                    if (u.getCurrentPage().getTitle().equals(artist.getUsername())) {
                         return command.getUsername() + " can't be deleted.";
                     }
                     ArrayList<Playlist> playlists = u.getPlaylists();
@@ -461,7 +461,7 @@ public final class Admin {
                 Host host = getHost(command.getUsername());
                 ArrayList<Podcast> podcasts = host.getPodcasts();
                 for (User u : users) {
-                    if (u.getCurrentPage().equals(host.getUsername())) {
+                    if (u.getCurrentPage().getTitle().equals(host.getUsername())) {
                         return command.getUsername() + " can't be deleted.";
                     }
                 }

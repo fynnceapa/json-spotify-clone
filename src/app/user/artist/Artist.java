@@ -21,14 +21,20 @@ public class Artist extends LibraryEntry {
     private String city;
     private Integer age;
 
-    private ArtistPage artistPage;
+    //private ArtistPage artistPage;
+
+    private ArrayList<Album> albums;
+    private ArrayList<Event> events;
+    private ArrayList<Merch> merch;
 
     public Artist(final String username, final String city, final Integer age) {
         super(username);
         this.username = username;
         this.city = city;
         this.age = age;
-        this.artistPage = new ArtistPage();
+        this.albums = new ArrayList<>();
+        this.events = new ArrayList<>();
+        this.merch = new ArrayList<>();
     }
 
     public void setUsername(String username) {
@@ -44,7 +50,7 @@ public class Artist extends LibraryEntry {
     }
 
     public boolean checkAlbumExists(String albumName) {
-        ArrayList<Album> albums = artistPage.getAlbums();
+        ArrayList<Album> albums = this.getAlbums();
         for (Album album : albums) {
             if (album.getName().equals(albumName)) {
                 return true;
@@ -54,13 +60,12 @@ public class Artist extends LibraryEntry {
     }
 
     public String addAlbum(CommandInput command) {
-        ArtistPage artistPage = this.artistPage;
-        artistPage.addAlbum(new Album(command));
+        albums.add(new Album(command));
         return username + " has added new album successfully.";
     }
 
     public Album getAlbum(String albumName) {
-        ArrayList<Album> albums = artistPage.getAlbums();
+        ArrayList<Album> albums = this.getAlbums();
         for (Album album : albums) {
             if (album.getName().equals(albumName)) {
                 return album;
@@ -70,7 +75,7 @@ public class Artist extends LibraryEntry {
     }
 
     public boolean checkEventExists(String eventName) {
-        ArrayList<Event> events = artistPage.getEvents();
+        ArrayList<Event> events = this.getEvents();
         for (Event event : events) {
             if (event.getName().equals(eventName)) {
                 return true;
@@ -87,11 +92,8 @@ public class Artist extends LibraryEntry {
         if (!event.checkDate(command.getDate())) {
             return "Event for " + username + " does not have a valid date.";
         }
-        artistPage.addEvent(event);
+        events.add(event);
         return username + " has added new event successfully.";
-    }
-    public ArrayList<Album> getAlbums() {
-        return artistPage.getAlbums();
     }
 
     public String addMerch(CommandInput command) {
@@ -101,13 +103,12 @@ public class Artist extends LibraryEntry {
         if (command.getPrice() < 0) {
             return "Price for merchandise can not be negative.";
         }
-        Merch merch = new Merch(command);
-        artistPage.addMerch(merch);
+        Merch m = new Merch(command);
+        merch.add(m);
         return username + " has added new merchandise successfully.";
     }
 
     private boolean checkMerchExists(String name) {
-        ArrayList<Merch> merch = artistPage.getMerch();
         for (Merch m : merch) {
             if (m.getName().equals(name)) {
                 return true;
@@ -156,7 +157,12 @@ public class Artist extends LibraryEntry {
             return username + " can't delete this album.";
         }
         Album album = getAlbum(name);
-        artistPage.removeAlbum(name);
+        for (Album a: this.albums) {
+            if (a.getName().equals(name)) {
+                this.albums.remove(a);
+                break;
+            }
+        }
         Admin.removeAlbum(album);
         return username + " has removed the album successfully.";
     }
@@ -165,7 +171,12 @@ public class Artist extends LibraryEntry {
         if (!checkEventExists(name)) {
             return username + " doesn't have an event with the given name.";
         }
-        artistPage.removeEvent(name);
+        for (Event e: this.events) {
+            if (e.getName().equals(name)) {
+                this.events.remove(e);
+                break;
+            }
+        }
         return username + " deleted the event successfully.";
     }
 
@@ -178,5 +189,9 @@ public class Artist extends LibraryEntry {
             }
         }
         return likes;
+    }
+
+    public ArtistPage getArtistPage() {
+        return new ArtistPage(this);
     }
 }

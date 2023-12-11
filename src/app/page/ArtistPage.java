@@ -1,31 +1,28 @@
 package app.page;
 
 import app.audio.Collections.Album;
+import app.user.artist.Artist;
 import app.user.artist.Event;
 import app.user.artist.Merch;
 import lombok.Getter;
 
 import java.util.ArrayList;
 @Getter
-public class ArtistPage extends BasicPage{
+public class ArtistPage extends BasicPage implements Visitable{
     private ArrayList<Album> albums;
     private ArrayList<Event> events;
     private ArrayList<Merch> merch;
 
-    public ArtistPage() {
-        this.albums = new ArrayList<>();
-        this.events = new ArrayList<>();
-        this.merch = new ArrayList<>();
+    public ArtistPage(Artist artist) {
+        super(artist.getName());
+        this.albums = artist.getAlbums();
+        this.events = artist.getEvents();
+        this.merch = artist.getMerch();
     }
 
-    public void addAlbum(Album album) {
-        albums.add(album);
+    public String accept(Visitor visitor) {
+        return visitor.visit(this);
     }
-
-    public void addEvent(Event event) {
-        events.add(event);
-    }
-
     @Override
     public String toString() {
         ArrayList<String> albumNames = new ArrayList<>();
@@ -41,27 +38,5 @@ public class ArtistPage extends BasicPage{
             eventNames.add(e.toString());
         }
         return "Albums:\n\t" + albumNames + "\n\nMerch:\n\t" + merchNames + "\n\nEvents:\n\t" + eventNames;
-    }
-
-    public void addMerch(Merch merch) {
-        this.merch.add(merch);
-    }
-
-    public void removeAlbum(String name) {
-        for (Album a: this.albums) {
-            if (a.getName().equals(name)) {
-                this.albums.remove(a);
-                break;
-            }
-        }
-    }
-
-    public void removeEvent(String name) {
-        for (Event e: this.events) {
-            if (e.getName().equals(name)) {
-                this.events.remove(e);
-                break;
-            }
-        }
     }
 }
