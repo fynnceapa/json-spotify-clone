@@ -11,7 +11,11 @@ import app.user.artist.Artist;
 import app.user.User;
 import app.user.host.Host;
 import app.utils.Enums;
-import fileio.input.*;
+import fileio.input.CommandInput;
+import fileio.input.EpisodeInput;
+import fileio.input.PodcastInput;
+import fileio.input.SongInput;
+import fileio.input.UserInput;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -200,6 +204,11 @@ public final class Admin {
         timestamp = 0;
     }
 
+    /**
+     * Retrieves a list of online users.
+     *
+     * @return A list of usernames of online users.
+     */
     public static List<String> getOnlineUsers() {
         List<String> onlineUsers = new ArrayList<>();
         for (User user : users) {
@@ -210,6 +219,12 @@ public final class Admin {
         return onlineUsers;
     }
 
+    /**
+     * Checks if a given username exists in the system.
+     *
+     * @param username the username to be checked
+     * @return true if the username exists, false otherwise
+     */
     public static boolean checkUsername(final String username) {
         for (User user : users) {
             if (user.getUsername().equals(username)) {
@@ -229,7 +244,13 @@ public final class Admin {
         return false;
     }
 
-    public static String addUser(CommandInput command) {
+    /**
+     * Adds a new user to the system based on the provided command input.
+     *
+     * @param command the command input containing the user details
+     * @return a message indicating the success or failure of the user addition
+     */
+    public static String addUser(final CommandInput command) {
         if (checkUsername(command.getUsername())) {
             return "The username " + command.getUsername() + " is already taken.";
         }
@@ -257,6 +278,12 @@ public final class Admin {
         }
     }
 
+    /**
+     * Retrieves an Artist object based on the provided username.
+     *
+     * @param username the username of the artist to retrieve
+     * @return the Artist object with the matching username, or null if not found
+     */
     public static Artist getArtist(final String username) {
         for (Artist artist : artists) {
             if (artist.getUsername().equals(username)) {
@@ -265,17 +292,39 @@ public final class Admin {
         }
         return null;
     }
-    public static void addSongs(ArrayList<Song> s) {
+
+    /**
+     * Adds a list of songs to the existing collection of songs.
+     *
+     * @param s the list of songs to be added
+     */
+    public static void addSongs(final ArrayList<Song> s) {
         songs.addAll(s);
     }
 
+    /**
+     * Returns a list of artists.
+     *
+     * @return the list of artists
+     */
     public static List<Artist> getArtists() {
         return artists;
     }
+
+    /**
+     * Returns the list of albums.
+     *
+     * @return the list of albums
+     */
     public static List<Album> getAlbums() {
         return albums;
     }
 
+    /**
+     * Retrieves a list of all usernames from the users, artists, and hosts collections.
+     *
+     * @return A list of all usernames.
+     */
     public static List<String> getAllUsers() {
         List<String> allUsers = new ArrayList<>();
         for (User user : users) {
@@ -290,7 +339,13 @@ public final class Admin {
         return allUsers;
     }
 
-    public static Host getHost(String username) {
+    /**
+     * Retrieves the Host object associated with the given username.
+     *
+     * @param username the username of the Host to retrieve
+     * @return the Host object if found, or null if not found
+     */
+    public static Host getHost(final String username) {
         for (Host host : hosts) {
             if (host.getUsername().equals(username)) {
                 return host;
@@ -299,11 +354,16 @@ public final class Admin {
         return null;
     }
 
+    /**
+     * Returns the list of hosts.
+     *
+     * @return the list of hosts
+     */
     public static List<Host> getHosts() {
         return hosts;
     }
 
-    private static boolean checkPodcastExists(String podcastName, String podcastOwner) {
+    private static boolean checkPodcastExists(final String podcastName, final String podcastOwner) {
         for (Podcast podcast : podcasts) {
             if (podcast.getName().equals(podcastName) && podcast.getOwner().equals(podcastOwner)) {
                 return true;
@@ -312,14 +372,21 @@ public final class Admin {
         return false;
     }
 
-    public static String addPodcast(CommandInput command) {
+    /**
+     * Adds a podcast based on the given command input.
+     *
+     * @param command the command input containing the podcast details
+     * @return a string indicating the result of the operation
+     */
+    public static String addPodcast(final CommandInput command) {
         if (checkPodcastExists(command.getName(), command.getUsername())) {
             return command.getUsername() + " has another podcast with the same name.";
         }
         for (Podcast podcast : podcasts) {
             if (podcast.getName().equals(command.getName())) {
                 for (int i = 0; i < podcast.getEpisodes().size(); i++) {
-                    if (podcast.getEpisodes().get(i).getName().equals(command.getEpisodes().get(0).getName())) {
+                    String ep = command.getEpisodes().get(0).getName();
+                    if (podcast.getEpisodes().get(i).getName().equals(ep)) {
                         return command.getUsername() + " has the same episode in this podcast.";
                     }
                 }
@@ -331,31 +398,48 @@ public final class Admin {
         return command.getUsername() + " has added new podcast successfully.";
     }
 
-    public static void addAlbum(Album album) {
+    /**
+     * Adds an album to the collection of albums.
+     * Also adds the songs from the album to the collection of songs.
+     *
+     * @param album The album to be added.
+     */
+    public static void addAlbum(final Album album) {
         albums.add(album);
-        ArrayList<Song> songs = album.getSongs();
-        addSongs(songs);
+        ArrayList<Song> albumSongs = album.getSongs();
+        addSongs(albumSongs);
     }
 
-    public static void removeAlbum(Album album) {
+    /**
+     * Removes the specified album from the collection of albums.
+     * Also removes all the songs from the album.
+     *
+     * @param album the album to be removed
+     */
+    public static void removeAlbum(final Album album) {
         albums.remove(album);
-        ArrayList<Song> songs = album.getSongs();
-        removeSongs(songs);
+        ArrayList<Song> albumSongs = album.getSongs();
+        removeSongs(albumSongs);
     }
 
-    public static void removePodcast(Podcast podcast) {
+    /**
+     * Removes the specified podcast from the list of podcasts.
+     *
+     * @param podcast the podcast to be removed
+     */
+    public static void removePodcast(final Podcast podcast) {
         podcasts.remove(podcast);
     }
 
-    private static void removeSongs(ArrayList<Song> songs) {
+    private static void removeSongs(final ArrayList<Song> s) {
         for (User u : users) {
             ArrayList<Song> likedSongs = u.getLikedSongs();
-            likedSongs.removeAll(songs);
+            likedSongs.removeAll(s);
         }
-        Admin.songs.removeAll(songs);
+        Admin.songs.removeAll(s);
     }
 
-    private static boolean checkDelete(String name) {
+    private static boolean checkDelete(final String name) {
         for (User u : users) {
             Player player = u.getPlayer();
             PlayerSource source = player.getSource();
@@ -390,7 +474,7 @@ public final class Admin {
         return true;
     }
 
-    private static String findUserType(String username) {
+    private static String findUserType(final String username) {
         for (User user : users) {
             if (user.getUsername().equals(username)) {
                 return "user";
@@ -408,11 +492,19 @@ public final class Admin {
         }
         return null;
     }
-    public static String deleteUser(CommandInput command) {
-        if (!checkUsername(command.getUsername())) {
+
+    /**
+     * Deletes a user based on the given command input.
+     *
+     * @param command the command input containing the username of the user to be deleted
+     * @return a message indicating the success or failure of the deletion operation
+     */
+    public static String deleteUser(final CommandInput command) {
+        String name = command.getUsername();
+        if (!checkUsername(name)) {
             return "The username " + command.getUsername() + " doesn't exist.";
         }
-        if (!checkDelete(command.getUsername())) {
+        if (!checkDelete(name)) {
             return command.getUsername() + " can't be deleted.";
         }
         String type = findUserType(command.getUsername());
@@ -430,43 +522,43 @@ public final class Admin {
                 users.remove(user);
                 for (User u : users) {
                     ArrayList<Playlist> followed = u.getFollowedPlaylists();
-                    followed.removeIf(playlist -> playlist.getOwner().equals(command.getUsername()));
+                    followed.removeIf(playlist -> playlist.getOwner().equals(name));
                 }
             }
             case "artist" -> {
-                Artist artist = getArtist(command.getUsername());
-                ArrayList<Album> albums = artist.getAlbums();
+                Artist artist = getArtist(name);
+                ArrayList<Album> artistAlbums = artist.getAlbums();
                 for (User u : users) {
                     if (u.getCurrentPage().getTitle().equals(artist.getUsername())) {
-                        return command.getUsername() + " can't be deleted.";
+                        return name + " can't be deleted.";
                     }
                     ArrayList<Playlist> playlists = u.getPlaylists();
                     for (Playlist p : playlists) {
-                        ArrayList<Song> songs = p.getSongs();
-                        for (Song song : songs) {
+                        ArrayList<Song> songArrayList = p.getSongs();
+                        for (Song song : songArrayList) {
                             if (song.getArtist().equals(artist.getUsername())) {
-                                return command.getUsername() + " can't be deleted.";
+                                return name + " can't be deleted.";
                             }
                         }
                     }
                 }
-                if (albums != null) {
-                    for (Album album : albums) {
+                if (artistAlbums != null) {
+                    for (Album album : artistAlbums) {
                         removeAlbum(album);
                     }
                 }
                 artists.remove(artist);
             }
             case "host" -> {
-                Host host = getHost(command.getUsername());
-                ArrayList<Podcast> podcasts = host.getPodcasts();
+                Host host = getHost(name);
+                ArrayList<Podcast> hostPodcasts = host.getPodcasts();
                 for (User u : users) {
                     if (u.getCurrentPage().getTitle().equals(host.getUsername())) {
-                        return command.getUsername() + " can't be deleted.";
+                        return name + " can't be deleted.";
                     }
                 }
-                if (podcasts != null) {
-                    for (Podcast podcast : podcasts) {
+                if (hostPodcasts != null) {
+                    for (Podcast podcast : hostPodcasts) {
                         removePodcast(podcast);
                     }
                 }
@@ -477,9 +569,14 @@ public final class Admin {
             }
         }
 
-        return command.getUsername() + " was successfully deleted.";
+        return name + " was successfully deleted.";
     }
 
+    /**
+     * Returns a list of the top 5 albums based on the number of likes and alphabetical order.
+     *
+     * @return a list of the top 5 albums
+     */
     public static List<String> getTop5Albums() {
         List<Album> sortedAlbums = new ArrayList<>(albums);
         sortedAlbums.sort(Comparator.comparingInt(Album::getLikes)
@@ -497,6 +594,11 @@ public final class Admin {
         return topAlbums;
     }
 
+    /**
+     * Retrieves the top 5 artists based on their number of likes and username.
+     *
+     * @return A list of the top 5 artists.
+     */
     public static List<String> getTop5Artists() {
         List<Artist> sortedArtists = new ArrayList<>(artists);
         sortedArtists.sort(Comparator.comparingInt(Artist::getLikes)

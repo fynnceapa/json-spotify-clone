@@ -19,10 +19,9 @@ public class Host extends LibraryEntry {
     private String city;
     private Integer age;
 
-    //private HostPage hostPage = new HostPage();
-
     private ArrayList<Podcast> podcasts;
     private ArrayList<Announcement> announcements;
+
     public Host(final String username, final Integer age, final String city) {
         super(username);
         this.username = username;
@@ -32,24 +31,45 @@ public class Host extends LibraryEntry {
         this.announcements = new ArrayList<>();
     }
 
-    public void setUsername(String username) {
+    /**
+     * Sets the username for the host.
+     *
+     * @param username the new username for the host
+     */
+    public void setUsername(final String username) {
         this.username = username;
     }
 
-    public void setCity(String city) {
+    /**
+     * Sets the city of the host.
+     *
+     * @param city the city to set
+     */
+    public void setCity(final String city) {
         this.city = city;
     }
 
-    public void setAge(Integer age) {
+    /**
+     * Sets the age of the host.
+     *
+     * @param age the age of the host
+     */
+    public void setAge(final Integer age) {
         this.age = age;
     }
 
-    public String addPodcast(CommandInput command) {
+    /**
+     * Adds a new podcast to the list of podcasts.
+     *
+     * @param command the command input containing the details of the podcast
+     * @return a message indicating the successful addition of the podcast
+     */
+    public String addPodcast(final CommandInput command) {
         podcasts.add(new Podcast(command));
         return command.getUsername() + " has added new podcast successfully.";
     }
 
-    private boolean checkAnnouncementExists(String announcementName) {
+    private boolean checkAnnouncementExists(final String announcementName) {
         for (Announcement announcement : announcements) {
             if (announcement.getName().equals(announcementName)) {
                 return true;
@@ -57,7 +77,14 @@ public class Host extends LibraryEntry {
         }
         return false;
     }
-    public String addAnnouncement(CommandInput command) {
+
+    /**
+     * Adds an announcement to the list of announcements.
+     *
+     * @param command the command input containing the details of the announcement
+     * @return a message indicating the success or failure of adding the announcement
+     */
+    public String addAnnouncement(final CommandInput command) {
         if (checkAnnouncementExists(command.getName())) {
             return command.getUsername() + " has already added an announcement with this name.";
         }
@@ -65,7 +92,13 @@ public class Host extends LibraryEntry {
         return command.getUsername() + " has successfully added new announcement.";
     }
 
-    public String removeAnnouncement(CommandInput command) {
+    /**
+     * Removes an announcement with the given name from the host's list of announcements.
+     *
+     * @param command the command input containing the name of the announcement to be removed
+     * @return a string indicating the result of the removal operation
+     */
+    public String removeAnnouncement(final CommandInput command) {
         if (!checkAnnouncementExists(command.getName())) {
             return command.getUsername() + " has no announcement with the given name.";
         }
@@ -78,7 +111,13 @@ public class Host extends LibraryEntry {
         return null;
     }
 
-    public Podcast getPodcast(String name) {
+    /**
+     * Retrieves a podcast with the specified name.
+     *
+     * @param name the name of the podcast to retrieve
+     * @return the podcast with the specified name, or null if not found
+     */
+    public Podcast getPodcast(final String name) {
         for (Podcast podcast : podcasts) {
             if (podcast.getName().equals(name)) {
                 return podcast;
@@ -87,8 +126,12 @@ public class Host extends LibraryEntry {
         return null;
     }
 
+    /**
+     * Retrieves the list of podcasts as PodcastOut objects.
+     *
+     * @return The list of PodcastOut objects representing the podcasts.
+     */
     public ArrayList<PodcastOut> getPodcastsOutput() {
-        ArrayList<Podcast> podcasts = new ArrayList<>(this.podcasts);
         ArrayList<PodcastOut> podcastsOut = new ArrayList<>();
         for (Podcast podcast : podcasts) {
             podcastsOut.add(new PodcastOut(podcast));
@@ -96,7 +139,7 @@ public class Host extends LibraryEntry {
         return podcastsOut;
     }
 
-    private boolean checkPodcastRemove(String name) {
+    private boolean checkPodcastRemove(final String name) {
         Podcast podcast = getPodcast(name);
         ArrayList<User> users = (ArrayList<User>) Admin.getUsers();
         for (User u : users) {
@@ -112,7 +155,13 @@ public class Host extends LibraryEntry {
         return true;
     }
 
-    public boolean checkPodcastExists(String podcastName) {
+    /**
+     * Checks if a podcast with the given name exists.
+     *
+     * @param podcastName the name of the podcast to check
+     * @return true if a podcast with the given name exists, false otherwise
+     */
+    public boolean checkPodcastExists(final String podcastName) {
         for (Podcast podcast : podcasts) {
             if (podcast.getName().equals(podcastName)) {
                 return true;
@@ -121,7 +170,13 @@ public class Host extends LibraryEntry {
         return false;
     }
 
-    public String removePodcast(String name) {
+    /**
+     * Removes a podcast with the given name from the user's collection.
+     *
+     * @param name the name of the podcast to be removed
+     * @return a message indicating the result of the removal operation
+     */
+    public String removePodcast(final String name) {
         if (!checkPodcastExists(name)) {
             return username + " doesn't have a podcast with the given name.";
         }
@@ -139,21 +194,13 @@ public class Host extends LibraryEntry {
         return username + " deleted the podcast successfully.";
     }
 
+    /**
+     * Returns a new instance of the HostPage class.
+     *
+     * @return a new instance of the HostPage class
+     */
     public HostPage getHostPage() {
         return new HostPage(this);
     }
 
-//    public boolean checkPodcastExists(String podcastName) {
-//        return hostPage.checkPodcastExists(podcastName);
-//    }
-//
-//    public String addPodcast(String podcastName, String podcastDescription) {
-//        HostPage hostPage = this.hostPage;
-//        hostPage.addPodcast(podcastName, podcastDescription);
-//        return username + " has added new podcast successfully.";
-//    }
-//
-//    public Podcast getPodcast(String podcastName) {
-//        return hostPage.getPodcast(podcastName);
-//    }
 }

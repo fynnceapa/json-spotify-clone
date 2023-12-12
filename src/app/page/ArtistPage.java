@@ -8,21 +8,34 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 @Getter
-public class ArtistPage extends BasicPage implements Visitable{
+public class ArtistPage extends BasicPage implements Visitable {
     private ArrayList<Album> albums;
     private ArrayList<Event> events;
     private ArrayList<Merch> merch;
 
-    public ArtistPage(Artist artist) {
+    public ArtistPage(final Artist artist) {
         super(artist.getName());
         this.albums = artist.getAlbums();
         this.events = artist.getEvents();
         this.merch = artist.getMerch();
     }
 
-    public String accept(Visitor visitor) {
+    /**
+     * Accepts a visitor and returns the result of visiting this ArtistPage.
+     *
+     * @param visitor the visitor to accept
+     * @return the result of visiting this ArtistPage
+     */
+    public String accept(final Visitor visitor) {
         return visitor.visit(this);
     }
+
+    /**
+     * Returns a string representation of the ArtistPage object.
+     * The string includes the names of the albums, merch, and events associated with the artist.
+     *
+     * @return A string representation of the ArtistPage object.
+     */
     @Override
     public String toString() {
         ArrayList<String> albumNames = new ArrayList<>();
@@ -37,6 +50,7 @@ public class ArtistPage extends BasicPage implements Visitable{
         for (Event e: this.events) {
             eventNames.add(e.toString());
         }
-        return "Albums:\n\t" + albumNames + "\n\nMerch:\n\t" + merchNames + "\n\nEvents:\n\t" + eventNames;
+        return "Albums:\n\t" + albumNames + "\n\nMerch:\n\t" + merchNames
+                + "\n\nEvents:\n\t" + eventNames;
     }
 }

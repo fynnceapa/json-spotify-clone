@@ -1,13 +1,12 @@
 package app.user;
 
-import app.Admin;
 import app.audio.Collections.AudioCollection;
 import app.audio.Collections.Playlist;
 import app.audio.Collections.PlaylistOutput;
 import app.audio.Files.AudioFile;
 import app.audio.Files.Song;
 import app.audio.LibraryEntry;
-import app.page.*;
+import app.page.PageVisitor;
 import app.player.Player;
 import app.player.PlayerStats;
 import app.searchBar.Filters;
@@ -281,8 +280,9 @@ public class User {
             return "Please load a source before liking or unliking.";
         }
 
-        if (!player.getType().equals("song") && !player.getType().equals("playlist") &&
-                !player.getType().equals("album")) {
+        if (!player.getType().equals("song")
+                && !player.getType().equals("playlist")
+                && !player.getType().equals("album")) {
             return "Loaded source is not a song.";
         }
 
@@ -515,10 +515,21 @@ public class User {
         player.simulatePlayer(time);
     }
 
+    /**
+     * Switches the user's online status.
+     */
     public void switchOnline() {
         isOnline = !isOnline;
     }
 
+    /**
+     * Returns a string representation of the current page.
+     * If the user is offline, it returns the username followed by "is offline."
+     * If the user is online, it uses a page visitor to accept the current page and return
+     * the result.
+     *
+     * @return a string representation of the current page
+     */
     public String printCurrentPage() {
         if (!isOnline) {
             return username + " is offline.";
@@ -526,11 +537,22 @@ public class User {
         return currentPage.accept(pageVisitor);
     }
 
+    /**
+     * Retrieves the player associated with this user.
+     *
+     * @return the player object
+     */
     public Player getPlayer() {
         return player;
     }
 
-    public String changePage(CommandInput command) {
+    /**
+     * Changes the current page based on the given command input.
+     *
+     * @param command the command input containing the next page to be accessed
+     * @return a string indicating the result of the page change operation
+     */
+    public String changePage(final CommandInput command) {
         if (!isOnline) {
             return username + " is offline.";
         }
@@ -546,7 +568,12 @@ public class User {
         return username + " is trying to access a non-existent page.";
     }
 
-    public void setCurrentPage(BasicPage c) {
+    /**
+     * Sets the current page for the user.
+     *
+     * @param c the BasicPage object representing the current page
+     */
+    public void setCurrentPage(final BasicPage c) {
         currentPage = c;
     }
 }

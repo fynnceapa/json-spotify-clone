@@ -40,11 +40,11 @@ public final class Podcast extends AudioCollection {
 
     @Override
     public String toString() {
-        ArrayList<String> episodes = new ArrayList<>();
+        ArrayList<String> epNames = new ArrayList<>();
         for (Episode episode : this.episodes) {
-            episodes.add(episode.toString());
+            epNames.add(episode.toString());
         }
-        return super.getName() + ":\n\t" + episodes + "\n";
+        return super.getName() + ":\n\t" + epNames + "\n";
     }
 
 }

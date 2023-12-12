@@ -444,7 +444,13 @@ public final class CommandRunner {
         return objectNode;
     }
 
-    public static ObjectNode switchConnectionStatus(CommandInput command) {
+    /**
+     * Switches the connection status of a user and returns an ObjectNode containing the result.
+     *
+     * @param command The command input containing the username, command, and timestamp.
+     * @return An ObjectNode containing the command, user, timestamp, and message.
+     */
+    public static ObjectNode switchConnectionStatus(final CommandInput command) {
         if (!Admin.checkUsername(command.getUsername())) {
             String message = "The username " + command.getUsername() + " doesn't exist.";
             ObjectNode objectNode = objectMapper.createObjectNode();
@@ -471,7 +477,13 @@ public final class CommandRunner {
         return objectNode;
     }
 
-    public static ObjectNode getOnlineUsers(CommandInput command) {
+    /**
+        * Creates an ObjectNode with the specified command, timestamp, and online users.
+        *
+        * @param command The command input.
+        * @return The ObjectNode containing the command, timestamp, and online users.
+        */
+    public static ObjectNode getOnlineUsers(final CommandInput command) {
         List<String> onlineUsers = Admin.getOnlineUsers();
 
         ObjectNode objectNode = objectMapper.createObjectNode();
@@ -482,7 +494,13 @@ public final class CommandRunner {
         return objectNode;
     }
 
-    public static ObjectNode addUser(CommandInput command) {
+    /**
+        * Adds a user using the provided command input.
+        *
+        * @param command the command input containing user information
+        * @return the JSON object node representing the result of the operation
+        */
+    public static ObjectNode addUser(final CommandInput command) {
         String message = Admin.addUser(command);
 
         ObjectNode objectNode = objectMapper.createObjectNode();
@@ -494,7 +512,14 @@ public final class CommandRunner {
         return objectNode;
     }
 
-    public static ObjectNode addAlbum(CommandInput command) {
+    /**
+     * Adds an album to the artist's list of albums and returns an ObjectNode containing
+     * the result.
+     *
+     * @param command The command input containing the username, command, and timestamp.
+     * @return An ObjectNode containing the command, user, timestamp, and message.
+     */
+    public static ObjectNode addAlbum(final CommandInput command) {
         if (!Admin.checkUsername(command.getUsername())) {
             String message = "The username " + command.getUsername() + " doesn't exist.";
             ObjectNode objectNode = objectMapper.createObjectNode();
@@ -525,8 +550,11 @@ public final class CommandRunner {
         }
         for (int i = 0; i < command.getSongs().size(); i++) {
             for (int j = i + 1; j < command.getSongs().size(); j++) {
-                if (command.getSongs().get(i).getName().equals(command.getSongs().get(j).getName())) {
-                    String message = artist.getUsername() + " has the same song at least twice in this album.";
+                String song1 = command.getSongs().get(i).getName();
+                String song2 = command.getSongs().get(j).getName();
+                if (song1.equals(song2)) {
+                    String message = artist.getUsername() + " has the same song at least"
+                    + " twice in this album.";
                     ObjectNode objectNode = objectMapper.createObjectNode();
                     objectNode.put("command", command.getCommand());
                     objectNode.put("user", command.getUsername());
@@ -549,7 +577,13 @@ public final class CommandRunner {
         return objectNode;
     }
 
-    public static ObjectNode showAlbums(CommandInput command) {
+    /**
+        * Returns an ObjectNode containing information about the albums of an artist.
+        *
+        * @param command the CommandInput object containing the username, command, and timestamp
+        * @return an ObjectNode containing the command, user, timestamp, and albums information
+        */
+    public static ObjectNode showAlbums(final CommandInput command) {
         Artist artist = Admin.getArtist(command.getUsername());
 
         ArrayList<Album> albums = artist.getAlbums();
@@ -567,7 +601,13 @@ public final class CommandRunner {
         return objectNode;
     }
 
-    public static ObjectNode printCurrentPage(CommandInput command) {
+    /**
+        * Creates and returns an ObjectNode containing information about the current page.
+        *
+        * @param command the CommandInput object representing the command
+        * @return the ObjectNode containing the command, user, timestamp, and message
+        */
+    public static ObjectNode printCurrentPage(final CommandInput command) {
         User user = Admin.getUser(command.getUsername());
         String message = user.printCurrentPage();
 
@@ -580,7 +620,14 @@ public final class CommandRunner {
         return objectNode;
     }
 
-    public static ObjectNode addEvent(CommandInput command) {
+    /**
+     * Adds an event to the artist's list of events and returns an ObjectNode containing
+     * the result.
+     *
+     * @param command The command input containing the username, command, and timestamp.
+     * @return An ObjectNode containing the command, user, timestamp, and message.
+     */
+    public static ObjectNode addEvent(final CommandInput command) {
         if (!Admin.checkUsername(command.getUsername())) {
             String message = "The username " + command.getUsername() + " doesn't exist.";
             ObjectNode objectNode = objectMapper.createObjectNode();
@@ -610,7 +657,13 @@ public final class CommandRunner {
         return objectNode;
     }
 
-    public static ObjectNode addMerch(CommandInput command) {
+    /**
+     * Add merche to artist's list of merch and returns an ObjectNode containing the result.
+     *
+     * @param command The command input containing the username, command, and timestamp.
+     * @return An ObjectNode containing the command, user, timestamp, and message.
+     */
+    public static ObjectNode addMerch(final CommandInput command) {
         if (!Admin.checkUsername(command.getUsername())) {
             String message = "The username " + command.getUsername() + " doesn't exist.";
             ObjectNode objectNode = objectMapper.createObjectNode();
@@ -640,7 +693,13 @@ public final class CommandRunner {
         return objectNode;
     }
 
-    public static ObjectNode getAllUsers(CommandInput command) {
+    /**
+        * Retrieves all users and returns them as an ObjectNode.
+        *
+        * @param command the CommandInput object containing the command and timestamp
+        * @return an ObjectNode containing the command, timestamp, and the list of users
+        */
+    public static ObjectNode getAllUsers(final CommandInput command) {
         List<String> users = Admin.getAllUsers();
 
         ObjectNode objectNode = objectMapper.createObjectNode();
@@ -651,7 +710,14 @@ public final class CommandRunner {
         return objectNode;
     }
 
-    public static ObjectNode addPodcast(CommandInput command) {
+    /**
+     * Adds a podcast to the host's list of podcasts and returns an ObjectNode containing
+     * the result.
+     *
+     * @param command The command input containing the username, command, and timestamp.
+     * @return An ObjectNode containing the command, user, timestamp, and message.
+     */
+    public static ObjectNode addPodcast(final CommandInput command) {
         if (!Admin.checkUsername(command.getUsername())) {
             String message = "The username " + command.getUsername() + " doesn't exist.";
             ObjectNode objectNode = objectMapper.createObjectNode();
@@ -681,7 +747,14 @@ public final class CommandRunner {
         return objectNode;
     }
 
-    public static ObjectNode addAnnouncement(CommandInput command) {
+    /**
+     * Adds an announcement to the host's list of announcements and returns an ObjectNode
+     * containing the result.
+     *
+     * @param command The command input containing the username, command, and timestamp.
+     * @return An ObjectNode containing the command, user, timestamp, and message.
+     */
+    public static ObjectNode addAnnouncement(final CommandInput command) {
         if (!Admin.checkUsername(command.getUsername())) {
             String message = "The username " + command.getUsername() + " doesn't exist.";
             ObjectNode objectNode = objectMapper.createObjectNode();
@@ -711,7 +784,14 @@ public final class CommandRunner {
         return objectNode;
     }
 
-    public static ObjectNode removeAnnouncement(CommandInput command) {
+    /**
+     * Removes an announcement from the host's list of announcements and returns an ObjectNode
+     * containing the result.
+     *
+     * @param command The command input containing the username, command, and timestamp.
+     * @return An ObjectNode containing the command, user, timestamp, and message.
+     */
+    public static ObjectNode removeAnnouncement(final CommandInput command) {
         if (!Admin.checkUsername(command.getUsername())) {
             String message = "The username " + command.getUsername() + " doesn't exist.";
             ObjectNode objectNode = objectMapper.createObjectNode();
@@ -739,7 +819,13 @@ public final class CommandRunner {
         return objectNode;
     }
 
-    public static ObjectNode showPodcasts(CommandInput command) {
+    /**
+     * Shows the podcasts of a host and returns an ObjectNode containing the result.
+     *
+     * @param command The command input containing the username, command, and timestamp.
+     * @return An ObjectNode containing the command, user, timestamp, and result.
+     */
+    public static ObjectNode showPodcasts(final CommandInput command) {
         Host host = Admin.getHost(command.getUsername());
 
         ArrayList<PodcastOut> podcasts = host.getPodcastsOutput();
@@ -753,7 +839,14 @@ public final class CommandRunner {
         return objectNode;
     }
 
-    public static ObjectNode removeAlbum(CommandInput command) {
+    /**
+     * Removes an album from the artist's list of albums and returns an ObjectNode
+     * containing the result.
+     *
+     * @param command The command input containing the username, command, and timestamp.
+     * @return An ObjectNode containing the command, user, timestamp, and message.
+     */
+    public static ObjectNode removeAlbum(final CommandInput command) {
         if (!Admin.checkUsername(command.getUsername())) {
             String message = "The username " + command.getUsername() + " doesn't exist.";
             ObjectNode objectNode = objectMapper.createObjectNode();
@@ -784,7 +877,13 @@ public final class CommandRunner {
         return objectNode;
     }
 
-    public static ObjectNode changePage(CommandInput command) {
+    /**
+        * Creates and returns an ObjectNode containing information about a page change command.
+        *
+        * @param command the CommandInput object representing the page change command
+        * @return the ObjectNode containing the command, user, timestamp, and message
+        */
+    public static ObjectNode changePage(final CommandInput command) {
         User user = Admin.getUser(command.getUsername());
         String message = user.changePage(command);
 
@@ -797,7 +896,13 @@ public final class CommandRunner {
         return objectNode;
     }
 
-    public static ObjectNode deleteUser(CommandInput command) {
+    /**
+     * Deletes user and returns an ObjectNode containing the result.
+     *
+     * @param command The command input containing the username, command, and timestamp.
+     * @return An ObjectNode containing the command, user, timestamp, and message.
+     */
+    public static ObjectNode deleteUser(final CommandInput command) {
         String message = Admin.deleteUser(command);
 
         ObjectNode objectNode = objectMapper.createObjectNode();
@@ -809,7 +914,13 @@ public final class CommandRunner {
         return objectNode;
     }
 
-    public static ObjectNode removePodcast(CommandInput command) {
+    /**
+     * Removes podcast from host's list of podcasts and returns an ObjectNode containing the result.
+     *
+     * @param command The command input containing the username, command, and timestamp.
+     * @return An ObjectNode containing the command, user, timestamp, and message.
+     */
+    public static ObjectNode removePodcast(final CommandInput command) {
         if (!Admin.checkUsername(command.getUsername())) {
             String message = "The username " + command.getUsername() + " doesn't exist.";
             ObjectNode objectNode = objectMapper.createObjectNode();
@@ -841,7 +952,13 @@ public final class CommandRunner {
         return objectNode;
     }
 
-    public static ObjectNode removeEvent(CommandInput command) {
+    /**
+     * Removes event from artist's list of events and returns an ObjectNode containing the result.
+     *
+     * @param command The command input containing the username, command, and timestamp.
+     * @return An ObjectNode containing the command, user, timestamp, and message.
+     */
+    public static ObjectNode removeEvent(final CommandInput command) {
         if (!Admin.checkUsername(command.getUsername())) {
             String message = "The username " + command.getUsername() + " doesn't exist.";
             ObjectNode objectNode = objectMapper.createObjectNode();
@@ -864,13 +981,19 @@ public final class CommandRunner {
         ObjectNode objectNode = objectMapper.createObjectNode();
         objectNode.put("command", command.getCommand());
         objectNode.put("user", command.getUsername());
-        objectNode.put("timestamp",command.getTimestamp());
+        objectNode.put("timestamp", command.getTimestamp());
         objectNode.put("message", message);
         return objectNode;
-
     }
 
-    public static ObjectNode getTop5Albums(CommandInput command) {
+    /**
+        * Retrieves the top 5 albums and creates an ObjectNode containing
+        * the command, timestamp, and result.
+        *
+        * @param command The CommandInput object representing the command.
+        * @return The ObjectNode containing the command, timestamp, and result.
+        */
+    public static ObjectNode getTop5Albums(final CommandInput command) {
         List<String> albums = Admin.getTop5Albums();
 
         ObjectNode objectNode = objectMapper.createObjectNode();
@@ -881,7 +1004,13 @@ public final class CommandRunner {
         return objectNode;
     }
 
-    public static ObjectNode getTop5Artists(CommandInput command) {
+    /**
+        * Returns an ObjectNode containing information about the top 5 artists.
+        *
+        * @param command the CommandInput object representing the command
+        * @return an ObjectNode containing the command, timestamp, and result
+        */
+    public static ObjectNode getTop5Artists(final CommandInput command) {
         List<String> artists = Admin.getTop5Artists();
 
         ObjectNode objectNode = objectMapper.createObjectNode();

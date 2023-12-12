@@ -11,7 +11,6 @@ import app.player.PlayerSource;
 import app.user.User;
 import fileio.input.CommandInput;
 import lombok.Getter;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 
@@ -20,8 +19,6 @@ public class Artist extends LibraryEntry {
     private String username;
     private String city;
     private Integer age;
-
-    //private ArtistPage artistPage;
 
     private ArrayList<Album> albums;
     private ArrayList<Event> events;
@@ -37,20 +34,40 @@ public class Artist extends LibraryEntry {
         this.merch = new ArrayList<>();
     }
 
-    public void setUsername(String username) {
+    /**
+     * Sets the username for the artist.
+     *
+     * @param username the username to be set
+     */
+    public void setUsername(final String username) {
         this.username = username;
     }
 
-    public void setCity(String city) {
+    /**
+     * Sets the city of the artist.
+     *
+     * @param city the city to set
+     */
+    public void setCity(final String city) {
         this.city = city;
     }
 
-    public void setAge(Integer age) {
+    /**
+     * Sets the age of the artist.
+     *
+     * @param age the age of the artist
+     */
+    public void setAge(final Integer age) {
         this.age = age;
     }
 
-    public boolean checkAlbumExists(String albumName) {
-        ArrayList<Album> albums = this.getAlbums();
+    /**
+     * Checks if an album with the specified name exists in the artist's collection.
+     *
+     * @param albumName the name of the album to check
+     * @return true if the album exists, false otherwise
+     */
+    public boolean checkAlbumExists(final String albumName) {
         for (Album album : albums) {
             if (album.getName().equals(albumName)) {
                 return true;
@@ -59,13 +76,24 @@ public class Artist extends LibraryEntry {
         return false;
     }
 
-    public String addAlbum(CommandInput command) {
+    /**
+     * Adds a new album to the artist's collection.
+     *
+     * @param command the command input containing the details of the album
+     * @return a message indicating the successful addition of the album
+     */
+    public String addAlbum(final CommandInput command) {
         albums.add(new Album(command));
         return username + " has added new album successfully.";
     }
 
-    public Album getAlbum(String albumName) {
-        ArrayList<Album> albums = this.getAlbums();
+    /**
+     * Retrieves the album with the specified name.
+     *
+     * @param albumName the name of the album to retrieve
+     * @return the album with the specified name, or null if not found
+     */
+    public Album getAlbum(final String albumName) {
         for (Album album : albums) {
             if (album.getName().equals(albumName)) {
                 return album;
@@ -74,8 +102,13 @@ public class Artist extends LibraryEntry {
         return null;
     }
 
-    public boolean checkEventExists(String eventName) {
-        ArrayList<Event> events = this.getEvents();
+    /**
+     * Checks if an event with the specified name exists for the artist.
+     *
+     * @param eventName the name of the event to check
+     * @return true if an event with the specified name exists, false otherwise
+     */
+    public boolean checkEventExists(final String eventName) {
         for (Event event : events) {
             if (event.getName().equals(eventName)) {
                 return true;
@@ -84,7 +117,13 @@ public class Artist extends LibraryEntry {
         return false;
     }
 
-    public String addEvent(CommandInput command) {
+    /**
+     * Adds a new event for the artist.
+     *
+     * @param command the command input containing the event details
+     * @return a string indicating the result of the operation
+     */
+    public String addEvent(final CommandInput command) {
         if (checkEventExists(command.getName())) {
             return username + " has another event with the same name.";
         }
@@ -96,7 +135,13 @@ public class Artist extends LibraryEntry {
         return username + " has added new event successfully.";
     }
 
-    public String addMerch(CommandInput command) {
+    /**
+     * Adds a new merchandise for the artist.
+     *
+     * @param command the command input containing the merchandise details
+     * @return a string indicating the result of the operation
+     */
+    public String addMerch(final CommandInput command) {
         if (checkMerchExists(command.getName())) {
             return username + " has merchandise with the same name.";
         }
@@ -108,7 +153,7 @@ public class Artist extends LibraryEntry {
         return username + " has added new merchandise successfully.";
     }
 
-    private boolean checkMerchExists(String name) {
+    private boolean checkMerchExists(final String name) {
         for (Merch m : merch) {
             if (m.getName().equals(name)) {
                 return true;
@@ -117,7 +162,7 @@ public class Artist extends LibraryEntry {
         return false;
     }
 
-    private boolean checkAlbumRemove(String name) {
+    private boolean checkAlbumRemove(final String name) {
         Album album = getAlbum(name);
         ArrayList<User> users = (ArrayList<User>) Admin.getUsers();
         for (User user : users) {
@@ -149,7 +194,13 @@ public class Artist extends LibraryEntry {
         return true;
     }
 
-    public String removeAlbum(String name) {
+    /**
+     * Removes an album with the given name from the artist's collection.
+     *
+     * @param name the name of the album to be removed
+     * @return a message indicating the result of the removal operation
+     */
+    public String removeAlbum(final String name) {
         if (!checkAlbumExists(name)) {
             return username + " doesn't have an album with the given name.";
         }
@@ -167,7 +218,13 @@ public class Artist extends LibraryEntry {
         return username + " has removed the album successfully.";
     }
 
-    public String removeEvent(String name) {
+    /**
+     * Removes an event with the given name from the artist's list of events.
+     *
+     * @param name the name of the event to be removed
+     * @return a message indicating whether the event was successfully removed or not
+     */
+    public String removeEvent(final String name) {
         if (!checkEventExists(name)) {
             return username + " doesn't have an event with the given name.";
         }
@@ -180,10 +237,16 @@ public class Artist extends LibraryEntry {
         return username + " deleted the event successfully.";
     }
 
+    /**
+     * Returns the total number of likes received by the artist.
+     * The likes are calculated by summing up the likes of all albums owned by the artist.
+     *
+     * @return the total number of likes received by the artist
+     */
     public int getLikes() {
-        ArrayList<Album> albums = (ArrayList<Album>) Admin.getAlbums();
+        ArrayList<Album> allAlbums = (ArrayList<Album>) Admin.getAlbums();
         int likes = 0;
-        for (Album album : albums) {
+        for (Album album : allAlbums) {
             if (album.getOwner().equals(username)) {
                 likes += album.getLikes();
             }
@@ -191,6 +254,11 @@ public class Artist extends LibraryEntry {
         return likes;
     }
 
+    /**
+     * Returns the ArtistPage associated with this Artist.
+     *
+     * @return the ArtistPage object
+     */
     public ArtistPage getArtistPage() {
         return new ArtistPage(this);
     }

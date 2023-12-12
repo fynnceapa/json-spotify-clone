@@ -18,8 +18,14 @@ public class Announcement {
         this.description = cmd.getDescription();
     }
 
+    /**
+        * Returns a string representation of the Announcement object.
+        * The string contains the name and description of the announcement.
+        *
+        * @return a string representation of the Announcement object
+        */
     @Override
-    public String toString(){
-    	return this.name + ":\n\t" + this.description + "\n";
+    public String toString() {
+        return this.name + ":\n\t" + this.description + "\n";
     }
 }
