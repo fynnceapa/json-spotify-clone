@@ -51,6 +51,7 @@ Am adaugat campuri noi in `CommandInput`.\
 Am modificat clasele pentru player pentru a putea folosi functionalitatile unui playlist si pentru albume.\
 Am adaugat un camp in `user` pentru a retine daca user-ul este logat sau nu si inca unul pentru pagina curenta.\
 Am adaugat comenzi noi pentru statistici.\
+Am modificat metoda `updateTimestamp` pentru a nu updata timpul pentru userii offline.
 
 ## Probleme intampinate
 Nu am intampinat probleme in implementare, dar mi-as fi dorit sa pot folosi mai multe design pattern-uri.\
